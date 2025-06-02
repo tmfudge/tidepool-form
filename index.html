@@ -1,0 +1,556 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TidePool Personal Brand Analysis</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+        
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 20px;
+            padding: 40px;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+            backdrop-filter: blur(10px);
+        }
+        
+        .header {
+            text-align: center;
+            margin-bottom: 40px;
+            border-bottom: 2px solid #e9ecef;
+            padding-bottom: 20px;
+        }
+        
+        .logo {
+            font-size: 2.5em;
+            font-weight: bold;
+            background: linear-gradient(45deg, #667eea, #764ba2);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 10px;
+        }
+        
+        .subtitle {
+            color: #666;
+            font-size: 1.1em;
+            margin-bottom: 15px;
+        }
+        
+        .description {
+            background: #e8f4f8;
+            padding: 20px;
+            border-radius: 8px;
+            margin-bottom: 30px;
+            border-left: 4px solid #007cba;
+        }
+        
+        .analysis-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+            margin: 15px 0;
+        }
+        
+        .analysis-item {
+            background: #f8f9fa;
+            padding: 12px;
+            border-radius: 6px;
+            font-size: 0.9em;
+        }
+        
+        .form-group {
+            margin-bottom: 25px;
+        }
+        
+        label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+            color: #333;
+        }
+        
+        .required {
+            color: #dc3545;
+        }
+        
+        input, textarea, select {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid #e1e5e9;
+            border-radius: 6px;
+            font-size: 16px;
+            transition: border-color 0.3s ease;
+            box-sizing: border-box;
+        }
+        
+        input:focus, textarea:focus, select:focus {
+            outline: none;
+            border-color: #007cba;
+            box-shadow: 0 0 0 3px rgba(0, 124, 186, 0.1);
+        }
+        
+        .file-upload {
+            position: relative;
+            display: inline-block;
+            width: 100%;
+            margin-bottom: 10px;
+        }
+        
+        .file-input {
+            position: absolute;
+            opacity: 0;
+            width: 100%;
+            height: 100%;
+            cursor: pointer;
+        }
+        
+        .file-label {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            min-height: 100px;
+            border: 2px dashed #ccc;
+            border-radius: 8px;
+            background: #f9f9f9;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .file-label:hover {
+            border-color: #667eea;
+            background: #f0f4ff;
+        }
+        
+        .file-info {
+            background: #fff3cd;
+            padding: 15px;
+            border-radius: 6px;
+            margin-top: 10px;
+            font-size: 0.9em;
+            border: 1px solid #ffeaa7;
+        }
+        
+        .upload-section {
+            background: #f8f9fa;
+            padding: 20px;
+            border-radius: 8px;
+            margin: 20px 0;
+            border-left: 4px solid #28a745;
+        }
+        
+        .checkbox-group {
+            display: flex;
+            align-items: flex-start;
+            gap: 12px;
+            margin: 20px 0;
+            padding: 20px;
+            background: #f8f9fa;
+            border-radius: 8px;
+            border: 2px solid #e9ecef;
+        }
+        
+        .checkbox-group input[type="checkbox"] {
+            width: auto;
+            margin: 0;
+            min-width: 18px;
+            height: 18px;
+        }
+        
+        .checkbox-group label {
+            margin: 0;
+            font-weight: normal;
+            line-height: 1.4;
+            cursor: pointer;
+        }
+        
+        .privacy-text {
+            font-size: 0.9em;
+            color: #555;
+        }
+        
+        button {
+            background: linear-gradient(135deg, #007cba, #005a87);
+            color: white;
+            padding: 15px 30px;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 18px;
+            font-weight: 600;
+            width: 100%;
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+        }
+        
+        button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(0, 124, 186, 0.3);
+        }
+        
+        button:disabled {
+            background: #ccc;
+            cursor: not-allowed;
+            transform: none;
+            box-shadow: none;
+        }
+        
+        .status {
+            padding: 15px;
+            margin: 20px 0;
+            border-radius: 6px;
+            display: none;
+            font-weight: 600;
+        }
+        
+        .success {
+            background: #d4edda;
+            color: #155724;
+            border: 1px solid #c3e6cb;
+        }
+        
+        .error {
+            background: #f8d7da;
+            color: #721c24;
+            border: 1px solid #f5c6cb;
+        }
+        
+        .usage-info {
+            background: #e8f4f8;
+            padding: 15px;
+            border-radius: 6px;
+            margin-bottom: 20px;
+            font-size: 0.9em;
+            text-align: center;
+        }
+        
+        .usage-count {
+            font-weight: bold;
+            color: #007cba;
+        }
+        
+        .multi-file {
+            margin-bottom: 15px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <div class="logo">TidePool</div>
+            <div class="subtitle">Personal Brand Analysis & Strategy</div>
+        </div>
+        
+        <div class="description">
+            <h3 style="margin-top: 0; color: #007cba;">What is TidePool?</h3>
+            <p>TidePool analyzes your professional presence across LinkedIn, your resume, and writing samples to create a comprehensive personal brand strategy. Our AI evaluates consistency, identifies opportunities, and provides actionable recommendations.</p>
+            
+            <div class="analysis-grid">
+                <div class="analysis-item">
+                    <strong>🌐 Network Analysis</strong><br>
+                    LinkedIn connections & influence mapping
+                </div>
+                <div class="analysis-item">
+                    <strong>📄 Career Trajectory</strong><br>
+                    Resume analysis & skills assessment
+                </div>
+                <div class="analysis-item">
+                    <strong>✍️ Voice & Style</strong><br>
+                    Writing analysis & tone consistency
+                </div>
+                <div class="analysis-item">
+                    <strong>🎯 Brand Alignment</strong><br>
+                    Coherence across all touchpoints
+                </div>
+            </div>
+        </div>
+
+        <div class="usage-info">
+            <div class="usage-count">Free Analysis: 2 per month</div>
+        </div>
+        
+        <form id="tidepoolForm">
+            <div class="form-group">
+                <label for="name">Your Name <span class="required">*</span></label>
+                <input type="text" id="name" name="name" required>
+            </div>
+            
+            <div class="form-group">
+                <label for="email">Email Address <span class="required">*</span></label>
+                <input type="email" id="email" name="email" required>
+                <small style="color: #666;">Used for delivery and usage tracking only</small>
+            </div>
+            
+            <div class="form-group">
+                <label for="industry">Industry/Field <span class="required">*</span></label>
+                <select id="industry" name="industry" required>
+                    <option value="">Select your industry...</option>
+                    <option value="technology">Technology</option>
+                    <option value="marketing">Marketing & Advertising</option>
+                    <option value="consulting">Consulting</option>
+                    <option value="finance">Finance & Banking</option>
+                    <option value="healthcare">Healthcare</option>
+                    <option value="education">Education</option>
+                    <option value="legal">Legal</option>
+                    <option value="real-estate">Real Estate</option>
+                    <option value="sales">Sales</option>
+                    <option value="hr">Human Resources</option>
+                    <option value="other">Other</option>
+                </select>
+            </div>
+            
+            <div class="form-group">
+                <label for="career-stage">Career Stage <span class="required">*</span></label>
+                <select id="career-stage" name="career_stage" required>
+                    <option value="">Select career stage...</option>
+                    <option value="early-career">Early Career (0-3 years)</option>
+                    <option value="mid-career">Mid Career (4-8 years)</option>
+                    <option value="senior">Senior Professional (9-15 years)</option>
+                    <option value="executive">Executive (15+ years)</option>
+                    <option value="entrepreneur">Entrepreneur/Founder</option>
+                    <option value="consultant">Independent Consultant</option>
+                </select>
+            </div>
+            
+            <div class="form-group">
+                <label for="goals">Primary Goal <span class="required">*</span></label>
+                <select id="goals" name="goals" required>
+                    <option value="">What's your main objective?</option>
+                    <option value="job-search">Job Search</option>
+                    <option value="career-advancement">Career Advancement</option>
+                    <option value="thought-leadership">Thought Leadership</option>
+                    <option value="business-development">Business Development</option>
+                    <option value="personal-branding">Personal Branding</option>
+                    <option value="networking">Networking Growth</option>
+                    <option value="content-strategy">Content Strategy</option>
+                </select>
+            </div>
+            
+            <div class="upload-section">
+                <h3 style="margin-top: 0; color: #28a745;">📊 Upload Your Professional Materials</h3>
+                
+                <div class="form-group">
+                    <label for="linkedin-csv">LinkedIn Connections Export <span class="required">*</span></label>
+                    <div class="file-upload">
+                        <input type="file" id="linkedin-csv" name="linkedin_csv" class="file-input" accept=".csv" required>
+                        <div class="file-label">
+                            <div>
+                                <div style="font-size: 48px; margin-bottom: 10px;">📊</div>
+                                <div>Upload LinkedIn Connections CSV</div>
+                                <div style="font-size: 14px; color: #666; margin-top: 5px;">Export from LinkedIn → My Network → Connections</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="file-info">
+                        <strong>How to get this:</strong> LinkedIn → My Network → Connections → Export connections<br>
+                        <strong>File format:</strong> CSV only<br>
+                        <strong>Max size:</strong> 5MB
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="resume">Resume/CV <span class="required">*</span></label>
+                    <div class="file-upload">
+                        <input type="file" id="resume" name="resume" class="file-input" accept=".pdf,.doc,.docx" required>
+                        <div class="file-label">
+                            <div>
+                                <div style="font-size: 48px; margin-bottom: 10px;">📄</div>
+                                <div>Upload Your Resume/CV</div>
+                                <div style="font-size: 14px; color: #666; margin-top: 5px;">PDF, DOC, or DOCX format</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="file-info">
+                        <strong>Supported formats:</strong> PDF, DOC, DOCX<br>
+                        <strong>Max size:</strong> 10MB
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="writing-samples">Writing Samples (3-5 pieces recommended)</label>
+                    <div class="multi-file">
+                        <div class="file-upload">
+                            <input type="file" id="writing1" name="writing_sample_1" class="file-input" accept=".pdf,.doc,.docx,.txt">
+                            <div class="file-label">
+                                <div>
+                                    <div style="font-size: 32px; margin-bottom: 5px;">📝</div>
+                                    <div>Writing Sample 1</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="multi-file">
+                        <div class="file-upload">
+                            <input type="file" id="writing2" name="writing_sample_2" class="file-input" accept=".pdf,.doc,.docx,.txt">
+                            <div class="file-label">
+                                <div>
+                                    <div style="font-size: 32px; margin-bottom: 5px;">📝</div>
+                                    <div>Writing Sample 2</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="multi-file">
+                        <div class="file-upload">
+                            <input type="file" id="writing3" name="writing_sample_3" class="file-input" accept=".pdf,.doc,.docx,.txt">
+                            <div class="file-label">
+                                <div>
+                                    <div style="font-size: 32px; margin-bottom: 5px;">📝</div>
+                                    <div>Writing Sample 3 (Optional)</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="file-info">
+                        <strong>Examples:</strong> Blog posts, articles, LinkedIn posts, presentations, reports<br>
+                        <strong>Supported formats:</strong> PDF, DOC, DOCX, TXT<br>
+                        <strong>Max size per file:</strong> 5MB
+                    </div>
+                </div>
+            </div>
+            
+            <div class="form-group">
+                <label for="focus-areas">Analysis Focus Areas</label>
+                <select id="focus-areas" name="focus_areas">
+                    <option value="">What should we prioritize?</option>
+                    <option value="network-optimization">Network Optimization</option>
+                    <option value="content-strategy">Content Strategy</option>
+                    <option value="professional-positioning">Professional Positioning</option>
+                    <option value="industry-influence">Industry Influence</option>
+                    <option value="career-transition">Career Transition</option>
+                    <option value="comprehensive">Comprehensive Analysis</option>
+                </select>
+            </div>
+            
+            <div class="checkbox-group">
+                <input type="checkbox" id="privacy-consent" name="privacy_consent" required>
+                <label for="privacy-consent" class="privacy-text">
+                    <strong>Zero Data Retention Consent <span class="required">*</span></strong><br>
+                    I understand and consent that:
+                    <ul style="margin: 8px 0; padding-left: 20px;">
+                        <li>My uploaded files will be processed immediately and permanently deleted</li>
+                        <li>No personal files or sensitive data is stored on TidePool servers</li>
+                        <li>Only the analysis results are sent to my email</li>
+                        <li>Usage count is tracked by email for free tier limits only</li>
+                        <li>This analysis typically takes 2-3 minutes to complete</li>
+                    </ul>
+                </label>
+            </div>
+            
+            <button type="submit" id="submit-btn">
+                🌊 Generate TidePool Analysis
+            </button>
+            
+            <div id="status" class="status"></div>
+        </form>
+
+        <div style="margin-top: 30px; padding: 20px; background: #f8f9fa; border-radius: 8px; text-align: center; font-size: 0.9em; color: #666;">
+            <p><strong>TidePool</strong> - Personal brand strategy for the digital age</p>
+            <p>Questions? Contact us at support@tidepool.com</p>
+        </div>
+    </div>
+
+    <script>
+        document.getElementById('tidepoolForm').addEventListener('submit', async function(e) {
+            e.preventDefault();
+            
+            const statusDiv = document.getElementById('status');
+            const submitBtn = document.getElementById('submit-btn');
+            
+            submitBtn.disabled = true;
+            submitBtn.textContent = '🌊 Processing Analysis...';
+            showStatus('success', 'Processing your files and generating analysis... This may take 2-3 minutes.');
+            
+            const formData = new FormData(this);
+            formData.append('submission_time', new Date().toISOString());
+            
+            try {
+                // Replace with actual Zapier webhook URL
+                const response = await fetch('ZAPIER_WEBHOOK_URL_GOES_HERE', {
+                    method: 'POST',
+                    body: formData
+                });
+                
+                if (response.ok) {
+                    showStatus('success', 'Analysis submitted successfully! Your TidePool report will be emailed to you within 5 minutes.');
+                    this.reset();
+                    resetFileLabels();
+                } else {
+                    throw new Error('Submission failed');
+                }
+            } catch (error) {
+                showStatus('error', 'Submission failed. Please check your internet connection and try again.');
+            } finally {
+                submitBtn.disabled = false;
+                submitBtn.textContent = '🌊 Generate TidePool Analysis';
+            }
+        });
+
+        function showStatus(type, message) {
+            const statusDiv = document.getElementById('status');
+            statusDiv.className = `status ${type}`;
+            statusDiv.textContent = message;
+            statusDiv.style.display = 'block';
+            
+            if (type === 'success') {
+                setTimeout(() => {
+                    statusDiv.style.display = 'none';
+                }, 15000);
+            }
+        }
+
+        function resetFileLabels() {
+            document.querySelectorAll('.file-label').forEach((label, index) => {
+                const originalContent = [
+                    '<div><div style="font-size: 48px; margin-bottom: 10px;">📊</div><div>Upload LinkedIn Connections CSV</div><div style="font-size: 14px; color: #666; margin-top: 5px;">Export from LinkedIn → My Network → Connections</div></div>',
+                    '<div><div style="font-size: 48px; margin-bottom: 10px;">📄</div><div>Upload Your Resume/CV</div><div style="font-size: 14px; color: #666; margin-top: 5px;">PDF, DOC, or DOCX format</div></div>',
+                    '<div><div style="font-size: 32px; margin-bottom: 5px;">📝</div><div>Writing Sample 1</div></div>',
+                    '<div><div style="font-size: 32px; margin-bottom: 5px;">📝</div><div>Writing Sample 2</div></div>',
+                    '<div><div style="font-size: 32px; margin-bottom: 5px;">📝</div><div>Writing Sample 3 (Optional)</div></div>'
+                ];
+                if (originalContent[index]) {
+                    label.innerHTML = originalContent[index];
+                }
+            });
+        }
+
+        // File upload handling
+        document.querySelectorAll('.file-input').forEach(input => {
+            input.addEventListener('change', function() {
+                const label = this.parentElement.querySelector('.file-label');
+                if (this.files.length > 0) {
+                    const fileName = this.files[0].name;
+                    label.innerHTML = `<div><div style="color: #28a745; margin-bottom: 10px;">✅</div><div>${fileName}</div><div style="font-size: 14px; color: #666; margin-top: 5px;">Ready to process</div></div>`;
+                }
+            });
+        });
+
+        // File size validation
+        document.querySelectorAll('.file-input').forEach(input => {
+            input.addEventListener('change', function() {
+                const file = this.files[0];
+                const maxSize = this.id === 'resume' ? 10 * 1024 * 1024 : 5 * 1024 * 1024; // 10MB for resume, 5MB for others
+                
+                if (file && file.size > maxSize) {
+                    const maxSizeMB = maxSize / (1024 * 1024);
+                    showStatus('error', `File size too large. Please select a file under ${maxSizeMB}MB.`);
+                    this.value = '';
+                    resetFileLabels();
+                }
+            });
+        });
+    </script>
+</body>
+</html>
